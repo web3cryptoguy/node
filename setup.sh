@@ -58,11 +58,14 @@ else
   echo -e "${BLUE}Skipping snapshot fetch.${NC}\n"
 fi
 
-# Create the `var` directory structure
+# Create the `var` directory structure with proper permissions
 echo -e "${GRAY}Creating var/secrets directory structure...${NC}"
 mkdir -p var/secrets
 if [ $? -eq 0 ]; then
-  echo -e "${GREEN}↳ Directory structure created.${NC}\n"
+  # Set directory permissions
+  chmod 777 var
+  chmod 777 var/secrets
+  echo -e "${GREEN}↳ Directory structure created with proper permissions.${NC}\n"
 else
   echo -e "${RED}↳ Error creating directory structure.${NC}\n"
   exit 1
@@ -72,7 +75,9 @@ fi
 echo -e "${GRAY}Generating secret for the engine API secure communication...${NC}"
 openssl rand -hex 32 > var/secrets/jwt.txt
 if [ $? -eq 0 ]; then
-  echo -e "${GREEN}↳ Secret generated and saved to var/secrets/jwt.txt.${NC}\n"
+  # Set jwt.txt permissions
+  chmod 666 var/secrets/jwt.txt
+  echo -e "${GREEN}↳ Secret generated and saved to var/secrets/jwt.txt with proper permissions.${NC}\n"
 else
   echo -e "${RED}↳ Error generating secret.${NC}\n"
   exit 1
@@ -95,19 +100,25 @@ if [ -f $RENAMED_SNAPSHOT_FILE_NAME ]; then
       echo -e "${GRAY}Decompressing and extracting $RENAMED_SNAPSHOT_FILE_NAME... ${ITALIC}(will take a few minutes...)${NC}"
       tar -xzf $RENAMED_SNAPSHOT_FILE_NAME
       if [ $? -eq 0 ]; then
-        echo -e "${GREEN}↳ Decompression and extraction complete.${NC}\n"
+        # Set permissions for geth directory
+        chmod -R 777 geth
+        echo -e "${GREEN}↳ Decompression and extraction complete with proper permissions.${NC}\n"
       else
         echo -e "${RED}↳ Error during decompression and extraction.${NC}\n"
         exit 1
       fi
     else
       echo -e "Preserving existing geth directory.${NC}\n"
+      # Set permissions for existing geth directory
+      chmod -R 777 geth
     fi
   else
     echo -e "${GRAY}geth directory not found. Decompressing and extracting $RENAMED_SNAPSHOT_FILE_NAME...${NC}"
     tar -xzf $RENAMED_SNAPSHOT_FILE_NAME
     if [ $? -eq 0 ]; then
-      echo -e "${GREEN}Decompression and extraction complete.${NC}\n"
+      # Set permissions for new geth directory
+      chmod -R 777 geth
+      echo -e "${GREEN}Decompression and extraction complete with proper permissions.${NC}\n"
     else
       echo -e "${RED}Error during decompression and extraction.${NC}\n"
       exit 1
@@ -115,6 +126,17 @@ if [ -f $RENAMED_SNAPSHOT_FILE_NAME ]; then
   fi
 else
   echo -e "${RED}$RENAMED_SNAPSHOT_FILE_NAME not found. Skipping decompression.${NC}\n"
+  # Ensure geth directory exists with proper permissions if it was created manually
+  if [ -d geth ]; then
+    chmod -R 777 geth
+  fi
 fi
+
+# Final permission check
+echo -e "${GRAY}Performing final permission check...${NC}"
+chmod -R 777 geth 2>/dev/null || true
+chmod -R 777 var
+chmod 666 var/secrets/jwt.txt
+echo -e "${GREEN}↳ Permissions verified.${NC}\n"
 
 echo -e "${WHITE}The Ink Node is ready to be started. Run it with:${NC}\n${BLUE}  docker compose up${GRAY} # --build to force rebuild the images ${NC}"

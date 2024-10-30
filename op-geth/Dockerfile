@@ -16,10 +16,17 @@ RUN go run build/ci.go install -static ./cmd/geth
 FROM golang:1.21 AS run-op-geth
 
 RUN apt-get update && \
-    apt-get install netcat-openbsd && \
-    apt-get install -y jq curl supervisor && \
-    rm -rf /var/lib/apt/lists
+    apt-get install -y --no-install-recommends \
+    netcat-openbsd \
+    jq \
+    curl \
+    supervisor && \
+    rm -rf /var/lib/apt/lists/*
+
 RUN mkdir -p /var/log/supervisor
+
+# Create non-root user
+RUN useradd -m -u 1000 -s /bin/bash opuser
 
 WORKDIR /app
 
@@ -28,5 +35,9 @@ COPY op-geth/config /config
 COPY op-geth/entrypoint.sh ./entrypoint.sh
 RUN chmod +x ./entrypoint.sh
 
+# Set proper ownership
+RUN chown -R opuser:opuser /app /var/log/supervisor
+
+USER opuser
 
 ENTRYPOINT [ "./entrypoint.sh" ]

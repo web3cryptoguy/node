@@ -10,10 +10,13 @@ services:
       - 30303:30303/udp # P2P UDP (currently unused)
       - 7301:6060 # metrics
     volumes:
-      - ./geth:/data
-      - ./var:/var
+      - ./geth:/data:rw
+      - ./var:/var:rw
     env_file:
       - .env.ink-sepolia
+    user: "1000:1000"
+    environment:
+      - GETH_DATA_DIR=/data
   op-node:
     build:
       context: .
@@ -27,6 +30,7 @@ services:
       - 7300:7300 # metrics
       - 6060:6060 # pprof
     volumes:
-      - ./var:/var
+      - ./var:/var:rw
     env_file:
       - .env.ink-sepolia
+    user: "1000:1000"
