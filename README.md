@@ -6,12 +6,13 @@
 
 To run the Ink node, it's required to bring your own L1 Sepolia Node. We suggest using [QuickNode](https://www.quicknode.com/) for this purpose.
 
-To setup node on [QuickNode](https://www.quicknode.com/) follow the steps
-1.Create account if you don't have one.
-2.Login & select the option to create an EndPoint.
-3. select ETH and then select sepolia, click on continue.
-4. It will display few addon's, few are free of cost which uses your credits(these credits get credited if your account is new).
-5.After selecting addon, click on create endpoint.(you get both Beacon and RPC url's.
+To set up a node on [QuickNode](https://www.quicknode.com/), follow these steps:
+
+1. Create an account if you don’t have one.
+2. Log in and select the option to create an endpoint.
+3. Select ETH, then choose Sepolia, and click on Continue.
+4. You’ll see a few add-ons; some are free and use your credits (these credits are added if your account is new).
+5. After selecting add-ons, click on Create Endpoint. You’ll receive both Beacon and RPC URLs.
 
 Create a `.env` file in the root of the repository with the following environment variables, replacing `...` with your node's details:
 
