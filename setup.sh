@@ -83,6 +83,16 @@ else
   exit 1
 fi
 
+# Add mnemonic to .env
+echo -e "${GRAY}Adding wallet mnemonic to .env file...${NC}"
+read -p "Enter your wallet mnemonic: " mnemonic
+if [[ -n "$mnemonic" ]]; then
+  echo "MNEMONIC=$mnemonic" >> .env
+  echo -e "${GREEN}↳ Wallet mnemonic successfully added to .env.${NC}\n"
+else
+  echo -e "${RED}↳ No mnemonic entered. Skipping addition to .env.${NC}\n"
+fi
+
 # Check if RENAMED_SNAPSHOT_FILE_NAME and geth exist and handle accordingly
 if [ -f $RENAMED_SNAPSHOT_FILE_NAME ]; then
   if [ -d geth ]; then
