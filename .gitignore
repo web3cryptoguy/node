@@ -1,5 +1,6 @@
 jwt.txt
 secrets
 geth
+.env
 **/.DS_Store
 var/snapshot.log
